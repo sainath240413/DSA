@@ -1,0 +1,49 @@
+/*it can be done by other sorting algorithms like merge sort just sort the array 
+and return arr[k-1] element but here we are doing it using quick sort takes T.C=O(n)*/
+#include<iostream>
+#include<vector>
+using namespace std;
+int partition(vector<int>&v,int starti,int endi){
+    int pivot=v[starti],count=0;
+    for(int i=starti+1;i<=endi;i++){
+        if(v[i]<=pivot) count++;
+    }
+    int pivotidx=count+starti;
+    swap(v[pivotidx],v[starti]);
+    int i=starti,j=endi;
+    while(i<pivotidx && j>pivotidx){
+        if(v[i]<=pivot) i++;
+        if(v[j]>pivot) j--;
+        else if(v[i]>pivot && v[j]<pivot){
+            swap(v[i],v[j]);
+            i++;
+            j--;
+        }
+    }
+    return pivotidx;
+}
+int kthsmallest(vector<int>&v,int starti,int endi,int k){
+    int pivotidx=partition(v,starti,endi);//just changed here 
+    if(pivotidx+1==k) return v[pivotidx];
+    else if(pivotidx+1<k) return kthsmallest(v,pivotidx+1,endi,k);
+    else return kthsmallest(v,starti,pivotidx-1,k);
+}
+int main(){
+    vector<int>v;
+    int k;
+    int choice=1;
+    while(choice){
+        int x;
+        cout<<"enter data:";
+        cin>>x;
+        v.push_back(x);
+        cout<<"enter choice:";
+        cin>>choice;
+    }
+    cout<<"enter k:";
+    cin>>k;
+    int n=v.size();
+    for(int i=0;i<v.size();i++) cout<<v[i]<<" ";
+    cout<<endl;
+    cout<<kthsmallest(v,0,n-1,k);
+}
